@@ -4,13 +4,13 @@ create table if not exists public.qr_codes (
   name text not null check (char_length(name) between 1 and 120),
   category text,
   active boolean not null default true,
-  destination_type text not null check (destination_type in ('employee_profile', 'employee_vcard', 'external')),
+  destination_type text not null check (destination_type in ('employee_profile', 'external')),
   employee_id uuid references public.employees(id) on delete restrict,
   destination_url text check (destination_url is null or destination_url ~ '^https://'),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint qr_destination_shape check (
-    (destination_type in ('employee_profile', 'employee_vcard') and employee_id is not null and destination_url is null)
+    (destination_type = 'employee_profile' and employee_id is not null and destination_url is null)
     or (destination_type = 'external' and employee_id is null and destination_url is not null)
   )
 );

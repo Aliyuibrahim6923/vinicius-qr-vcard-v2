@@ -11,6 +11,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ code
   const supabase = await createClient();
   const { data: employee } = await supabase.from("employees").select("slug").eq("id", qrCode.employee_id).eq("active", true).maybeSingle();
   if (!employee) return new Response("Destination unavailable", { status: 404, headers: { "Cache-Control": "no-store" } });
-  const suffix = qrCode.destination_type === "employee_vcard" ? "/vcard" : "";
-  return Response.redirect(new URL(`/p/${employee.slug}${suffix}`, request.url), 307);
+  // Contact QR codes always open the hosted profile. The visitor chooses when to
+  // download the vCard by tapping the profile's Save contact button.
+  return Response.redirect(new URL(`/p/${employee.slug}`, request.url), 307);
 }

@@ -6,7 +6,7 @@
 
 ## Product model
 
-The product is a managed QR platform. Employee vCards and profiles are supported destination types rather than a requirement for creating a QR code.
+The product is a managed QR platform. A contact QR opens the employee's hosted public profile; the visitor then chooses **Save contact** to import the vCard on iOS or Android. External approved URLs remain another supported destination type.
 
 ```text
 Printed QR → Permanent QR URL → Assigned destination

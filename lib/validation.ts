@@ -46,7 +46,7 @@ export const qrCodeSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(120),
   category: z.string().trim().max(80).optional().or(z.literal("")),
   active: z.boolean().default(true),
-  destination_type: z.enum(["employee_profile", "employee_vcard", "external"]),
+  destination_type: z.enum(["employee_profile", "external"]),
   employee_id: z.string().uuid().nullable().optional(),
   destination_url: z.string().trim().nullable().optional()
 }).superRefine((value, context) => {

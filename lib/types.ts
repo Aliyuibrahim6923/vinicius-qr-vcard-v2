@@ -23,7 +23,7 @@ export type QRCodeRecord = {
   name: string;
   category: string | null;
   active: boolean;
-  destination_type: "employee_profile" | "employee_vcard" | "external";
+  destination_type: "employee_profile" | "external";
   employee_id: string | null;
   destination_url: string | null;
   created_at: string;
