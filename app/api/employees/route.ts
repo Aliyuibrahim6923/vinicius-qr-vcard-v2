@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { employeeSchema, normalizeEmployee } from "@/lib/validation";
 import { isSameOrigin } from "@/lib/request";
+import { randomBytes } from "node:crypto";
 
 async function adminClient() {
   const supabase = await createClient();
@@ -24,7 +25,11 @@ export async function POST(request: Request) {
   if (!supabase) return Response.json({ error: "Unauthorized" }, { status: 401 });
   const parsed = employeeSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Invalid employee", fields: parsed.error.flatten().fieldErrors }, { status: 422 });
-  const { data, error } = await supabase.from("employees").insert(normalizeEmployee(parsed.data)).select().single();
-  if (error?.code === "23505") return Response.json({ error: "That slug is already in use" }, { status: 409 });
-  return error ? Response.json({ error: "Unable to create employee" }, { status: 500 }) : Response.json(data, { status: 201 });
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const slug = `profile-${randomBytes(10).toString("hex")}`;
+    const { data, error } = await supabase.from("employees").insert({ ...normalizeEmployee(parsed.data), slug }).select().single();
+    if (!error) return Response.json(data, { status: 201 });
+    if (error.code !== "23505") return Response.json({ error: "Unable to create employee" }, { status: 500 });
+  }
+  return Response.json({ error: "Unable to allocate a permanent profile address" }, { status: 503 });
 }

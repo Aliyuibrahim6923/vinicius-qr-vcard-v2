@@ -11,6 +11,5 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   if (!parsed.success) return Response.json({ error: "Invalid employee", fields: parsed.error.flatten().fieldErrors }, { status: 422 });
   const { id } = await params;
   const { data, error } = await supabase.from("employees").update(normalizeEmployee(parsed.data)).eq("id", id).select().single();
-  if (error?.code === "23505") return Response.json({ error: "That slug is already in use" }, { status: 409 });
   return error ? Response.json({ error: "Unable to update employee" }, { status: 500 }) : Response.json(data);
 }

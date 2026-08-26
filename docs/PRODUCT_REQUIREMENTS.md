@@ -47,6 +47,8 @@ A managed QR record contains:
 
 Employee and QR active states are independent. A disabled QR returns `404`. A QR assigned to an unavailable employee also fails without exposing employee data. QR deletion is excluded so issued URLs cannot be reassigned accidentally.
 
+Administrators do not create or manage employee URL slugs. The system automatically generates an opaque, permanent profile identifier under the application's single deployed domain.
+
 ## Security amendment
 
 - External redirects accept HTTPS only.

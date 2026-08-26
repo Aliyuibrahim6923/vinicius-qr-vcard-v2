@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { qrCodeSchema } from "./validation";
+import { employeeSchema, qrCodeSchema } from "./validation";
 
 describe("managed QR validation", () => {
   it("accepts an approved public HTTPS destination", () => {
@@ -10,5 +10,16 @@ describe("managed QR validation", () => {
   });
   it("requires an employee for employee destinations", () => {
     expect(qrCodeSchema.safeParse({ name: "Profile", active: true, destination_type: "employee_profile" }).success).toBe(false);
+  });
+});
+
+describe("employee URL validation", () => {
+  it("accepts a valid employee without an administrator-provided slug", () => {
+    const result = employeeSchema.safeParse({ first_name: "Ada", last_name: "Lovelace", job_title: "Director" });
+    expect(result.success).toBe(true);
+  });
+  it("reports malformed optional URLs without throwing", () => {
+    const result = employeeSchema.safeParse({ first_name: "Ada", last_name: "Lovelace", job_title: "Director", website: "example.com" });
+    expect(result.success).toBe(false);
   });
 });

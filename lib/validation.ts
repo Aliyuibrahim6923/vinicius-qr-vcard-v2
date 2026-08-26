@@ -1,13 +1,15 @@
 import { z } from "zod";
 
 const optionalText = z.string().trim().max(500).optional().or(z.literal(""));
-const optionalUrl = z.string().trim().url().refine((v) => ["http:", "https:"].includes(new URL(v).protocol), "Use an http(s) URL").optional().or(z.literal(""));
+const optionalUrl = z.string().trim().refine((value) => {
+  if (!value) return true;
+  try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; }
+}, "Use a complete http(s) URL, including https://").optional().or(z.literal(""));
 
 export const employeeSchema = z.object({
   first_name: z.string().trim().min(1, "First name is required").max(80),
   last_name: z.string().trim().min(1, "Last name is required").max(80),
   job_title: z.string().trim().min(1, "Job title is required").max(120),
-  slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers, and hyphens"),
   department: optionalText,
   email: z.string().trim().email().optional().or(z.literal("")),
   phone: z.string().trim().regex(/^\+?[0-9 ()-]{7,25}$/, "Enter a valid phone number").optional().or(z.literal("")),

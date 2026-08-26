@@ -16,7 +16,9 @@ create table if not exists public.employees (
   linkedin_url text,
   bio text check (char_length(bio) <= 600),
   photo_url text,
-  slug text not null unique check (slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
+  -- Internal permanent profile identifier. Administrators never enter this value.
+  slug text not null unique default ('profile-' || encode(extensions.gen_random_bytes(10), 'hex'))
+    check (slug ~ '^profile-[a-f0-9]{20}$'),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
