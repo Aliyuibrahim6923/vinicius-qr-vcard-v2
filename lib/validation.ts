@@ -13,6 +13,7 @@ export const employeeSchema = z.object({
   department: optionalText,
   email: z.string().trim().email().optional().or(z.literal("")),
   phone: z.string().trim().regex(/^\+?[0-9 ()-]{7,25}$/, "Enter a valid phone number").optional().or(z.literal("")),
+  phone_action: z.enum(["call", "whatsapp", "both"]).default("both"),
   website: optionalUrl,
   linkedin_url: optionalUrl,
   address: optionalText,

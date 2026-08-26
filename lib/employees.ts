@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { Employee } from "@/lib/types";
+import { siteOrigin } from "@/lib/site-url";
 
 export const getVisibleEmployee = cache(async (slug: string): Promise<Employee | null> => {
   const supabase = await createClient();
@@ -10,7 +11,5 @@ export const getVisibleEmployee = cache(async (slug: string): Promise<Employee |
 });
 
 export function canonicalUrl(slug: string) {
-  const origin = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!origin) throw new Error("Missing required environment variable: NEXT_PUBLIC_SITE_URL");
-  return `${origin.replace(/\/$/, "")}/p/${slug}`;
+  return `${siteOrigin()}/p/${slug}`;
 }

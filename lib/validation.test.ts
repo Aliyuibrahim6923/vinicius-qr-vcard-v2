@@ -22,4 +22,12 @@ describe("employee URL validation", () => {
     const result = employeeSchema.safeParse({ first_name: "Ada", last_name: "Lovelace", job_title: "Director", website: "example.com" });
     expect(result.success).toBe(false);
   });
+  it("accepts the administrator's phone action choice", () => {
+    const result = employeeSchema.safeParse({ first_name: "Ada", last_name: "Lovelace", job_title: "Director", phone: "+234 800 000 0000", phone_action: "whatsapp" });
+    expect(result.success).toBe(true);
+  });
+  it("rejects unsupported phone actions", () => {
+    const result = employeeSchema.safeParse({ first_name: "Ada", last_name: "Lovelace", job_title: "Director", phone_action: "sms" });
+    expect(result.success).toBe(false);
+  });
 });

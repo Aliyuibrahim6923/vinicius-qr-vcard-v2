@@ -7,6 +7,7 @@ export type Employee = {
   department: string | null;
   email: string | null;
   phone: string | null;
+  phone_action: "call" | "whatsapp" | "both";
   website: string | null;
   address: string | null;
   linkedin_url: string | null;

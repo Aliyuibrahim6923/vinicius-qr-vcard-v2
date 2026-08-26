@@ -25,7 +25,35 @@ body{background:linear-gradient(145deg,#f7f8f7 0%,#edf1f1 100%);color:var(--bran
 .qr-mark,.photo.placeholder{background:linear-gradient(145deg,var(--brand-charcoal),#333638)}
 .qr-preview{width:96px;height:96px;flex:0 0 96px;display:grid;place-items:center;padding:4px;border:1px solid var(--line);border-radius:10px;background:#fff}
 .qr-preview img{display:block;width:88px;height:88px}
+.photo-upload img{width:72px;height:72px;object-fit:cover;border-radius:50%;border:2px solid var(--line)}
+.photo-upload small{color:var(--muted);font-weight:400}
 .profile-page{background:radial-gradient(circle at 50% 0,#dce5e6 0%,transparent 46%),linear-gradient(145deg,#f7f8f7,#e9eeee)}
 .contact-actions a:hover{color:var(--brand-red);background:#fbf6f5}
 .text-link{color:var(--brand-red);font-weight:700;text-underline-offset:4px}
 @media(max-width:650px){.brand-logo-admin{width:108px;margin:-30px -12px -25px -18px}.admin-brand{align-self:flex-start}.brand-logo-login{width:185px}.brand-logo-profile{width:138px}.qr-preview{width:82px;height:82px;flex-basis:82px}.qr-preview img{width:74px;height:74px}}
+
+/* Public contact card */
+.profile-page{padding:34px 16px;background:linear-gradient(160deg,#dfe7e8 0%,#f5f6f5 42%,#ecefef 100%)}
+.profile-card{width:min(100%,420px);border:1px solid #d7dddd;border-radius:24px;background:#fff;box-shadow:0 24px 70px #263b3e24}
+.profile-brand{height:82px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;background:var(--brand-charcoal);color:#fff;border-bottom:4px solid var(--brand-red)}
+.profile-wordmark{display:flex;align-items:center;gap:11px}.profile-wordmark>span:last-child{display:grid;gap:2px}.profile-wordmark strong{font-size:12px;letter-spacing:1.7px}.profile-wordmark small{font-size:10px;color:#bfc7c8;letter-spacing:.5px}
+.profile-monogram{width:38px;height:38px;border:1px solid #ffffff55;border-radius:9px;display:grid;place-items:center;font-size:12px;font-weight:900;letter-spacing:-1px}
+.verified-badge{padding:6px 9px;border:1px solid #ffffff38;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#e7eded}
+.profile-top{padding:26px 30px 24px;margin:0;text-align:center}
+.profile-top .photo{display:grid;margin:0 auto;width:116px;height:116px;border:4px solid #fff;outline:1px solid #dfe4e4;box-shadow:0 10px 28px #1c30331f}
+.profile-card h1{font-family:Arial,Helvetica,sans-serif;font-size:29px;line-height:1.15;letter-spacing:-.8px;margin:17px 0 7px;color:var(--brand-charcoal)}
+.profile-card .role{font-size:15px;color:#313839}.profile-card .department{margin:5px 0 0;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--brand-red)}
+.profile-card .bio{max-width:340px;margin:16px auto 0;font-size:13px;line-height:1.6;color:#607073}
+.profile-contact{padding:22px;border-top:1px solid var(--line);background:#f7f8f8}
+.profile-section-heading{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}.profile-section-heading h2{margin:0;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--brand-charcoal)}.profile-section-heading>span{font-size:10px;color:var(--muted)}
+.contact-actions{display:grid;grid-template-columns:1fr;gap:8px;background:transparent;border:0}
+.contact-actions a{min-height:62px;padding:10px 12px;border:1px solid #dbe1e1;border-radius:11px;background:#fff;text-align:left;text-decoration:none;display:flex;align-items:center;gap:12px;overflow:hidden;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.contact-actions a:hover{border-color:#d62f2766;box-shadow:0 7px 20px #526e7614;transform:translateY(-1px)}
+.action-icon{width:36px;height:36px;flex:0 0 36px;border-radius:9px;display:grid!important;place-items:center;background:#edf1f1;color:var(--brand-charcoal)!important;font-size:11px!important;font-weight:900}.action-icon.whatsapp{background:#e9f6ee;color:#167743!important}
+.action-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.action-icon svg rect,.action-icon svg circle{fill:none}.action-icon svg path{vector-effect:non-scaling-stroke}
+.contact-actions a>span:last-child{min-width:0;display:grid;gap:3px}.contact-actions strong{font-size:13px;color:var(--brand-charcoal)}.contact-actions small{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.no-contact-actions{margin:0;padding:17px;border:1px dashed #ccd6d6;border-radius:11px;color:var(--muted);font-size:12px;text-align:center;background:#fff}
+.profile-card .detail{padding:18px 22px;border-top:1px solid var(--line)}.profile-card .detail span{font-size:10px}.profile-card .detail p{font-size:13px;line-height:1.5;color:#4b595b}
+.profile-footer{padding:20px 22px 4px;border-top:1px solid var(--line);background:#fff}.profile-footer .save-contact{margin:0;text-align:center;border-radius:11px;padding:14px 18px;display:flex;justify-content:center;align-items:center;gap:8px}.profile-footer .save-contact>svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.profile-footer .privacy-note{margin:14px 0;color:#788587}
+.employee-form label small{color:var(--muted);font-weight:400;line-height:1.4}
+@media(max-width:420px){.profile-page{padding:0;background:#fff}.profile-card{min-height:100dvh;border:0;border-radius:0;box-shadow:none}.profile-brand{padding-inline:18px}.profile-top{padding-inline:22px}.profile-contact{padding-inline:16px}.profile-card h1{font-size:27px}}

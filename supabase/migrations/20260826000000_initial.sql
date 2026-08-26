@@ -11,6 +11,7 @@ create table if not exists public.employees (
   department text,
   email text,
   phone text,
+  phone_action text not null default 'both' check (phone_action in ('call', 'whatsapp', 'both')),
   website text,
   address text,
   linkedin_url text,

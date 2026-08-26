@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { QRCodeRecord } from "@/lib/types";
+import { siteOrigin } from "@/lib/site-url";
 
 export const getActiveQRCode = cache(async (code: string): Promise<QRCodeRecord | null> => {
   const supabase = await createClient();
@@ -9,7 +10,5 @@ export const getActiveQRCode = cache(async (code: string): Promise<QRCodeRecord 
 });
 
 export function managedQRCodeUrl(code: string) {
-  const origin = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!origin) throw new Error("Missing required environment variable: NEXT_PUBLIC_SITE_URL");
-  return `${origin.replace(/\/$/, "")}/q/${code}`;
+  return `${siteOrigin()}/q/${code}`;
 }
