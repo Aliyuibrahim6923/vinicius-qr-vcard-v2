@@ -34,6 +34,18 @@ A responsive managed QR platform backed by Supabase Postgres and Supabase Auth. 
 - Use Supabase database backups and document a restore drill and retention policy.
 - Run the physical QR and iOS/Android/Outlook vCard compatibility matrix before launch.
 
+## WhatsApp company assistant
+
+The admin dashboard includes a company assistant setup screen. It can index approved HTTPS pages, pasted text, PDF, TXT, and Markdown documents. When enabled, every employee card shows a compact on-page chat icon. A separate **Ask company assistant** WhatsApp action appears when a business number is configured. Employee addresses also open in Google Maps.
+
+1. Apply `supabase/migrations/20260827000000_whatsapp_ai_agent.sql` in the Supabase SQL editor. The migration creates the private knowledge store, vector search, message deduplication, and storage bucket.
+2. Add the AI and Meta placeholders from `.env.example` to `.env.local` and to the Vercel project. `AI_GATEWAY_API_KEY` is needed for local development; Vercel deployments may use Vercel OIDC instead.
+3. In Meta for Developers, configure the WhatsApp callback URL as `https://YOUR-DOMAIN/api/whatsapp/webhook`. Use the same private value for Meta's verify token and `WHATSAPP_VERIFY_TOKEN`, then subscribe to the `messages` webhook field.
+4. Add the permanent WhatsApp access token, phone number ID, Meta app secret, and Graph API version. Redeploy after changing Vercel environment variables.
+5. Open **Admin → Company assistant**, add approved knowledge, enter the WhatsApp business number in international format, test the webhook, and then enable the assistant.
+
+The access token, app secret, Supabase secret, and AI key are server-only variables. Never prefix them with `NEXT_PUBLIC_` or expose them in browser code.
+
 ## Commands
 
 ```bash

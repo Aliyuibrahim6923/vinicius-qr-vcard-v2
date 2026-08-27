@@ -30,3 +30,25 @@ export type QRCodeRecord = {
   created_at: string;
   updated_at: string;
 };
+
+export type BotSettings = {
+  id: boolean;
+  enabled: boolean;
+  company_name: string;
+  whatsapp_number: string;
+  greeting_message: string;
+  system_prompt: string;
+  updated_at: string;
+};
+
+export type KnowledgeSource = {
+  id: string;
+  source_type: "website" | "document" | "text";
+  name: string;
+  source_url: string | null;
+  storage_path: string | null;
+  status: "processing" | "ready" | "error";
+  error_message: string | null;
+  created_at: string;
+  updated_at: string;
+};
