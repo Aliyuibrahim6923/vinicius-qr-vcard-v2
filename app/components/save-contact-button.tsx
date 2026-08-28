@@ -1,44 +1,60 @@
 "use client";
 
-import { useCallback, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import styles from "./save-contact-button.module.css";
 
-/**
- * On Android Chrome, navigator.share() with a .vcf File opens the native
- * share sheet which includes "Contacts" — letting the user save directly.
- * On iOS and desktop, we fall back to the regular vCard download link.
- */
 export function SaveContactButton({ vcardUrl, children }: { vcardUrl: string; children: ReactNode }) {
-  const handleClick = useCallback(async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Only intercept on Android with Web Share API support
-    const ua = navigator.userAgent;
-    if (!/android/i.test(ua) || !navigator.share || !navigator.canShare) return;
+  const [showAndroidHelp, setShowAndroidHelp] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
-    e.preventDefault();
+  useEffect(() => {
+    if (!showAndroidHelp) return;
 
-    try {
-      const res = await fetch(vcardUrl);
-      if (!res.ok) throw new Error("fetch failed");
-      const blob = await res.blob();
-      const file = new File([blob], "contact.vcf", { type: "text/vcard" });
-
-      if (!navigator.canShare({ files: [file] })) {
-        // Device doesn't support sharing files — fall back to download
-        window.location.href = vcardUrl;
-        return;
-      }
-
-      await navigator.share({ files: [file] });
-    } catch (err: unknown) {
-      // AbortError = user dismissed the share sheet, that's fine
-      if (err instanceof DOMException && err.name === "AbortError") return;
-      // Any other error — fall back to download
-      window.location.href = vcardUrl;
+    dialogRef.current?.focus();
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setShowAndroidHelp(false);
     }
-  }, [vcardUrl]);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [showAndroidHelp]);
+
+  function handleClick() {
+    if (/Android/i.test(navigator.userAgent)) setShowAndroidHelp(true);
+  }
 
   return (
-    <a className="button save-contact" href={vcardUrl} onClick={handleClick}>
-      {children}
-    </a>
+    <>
+      <a
+        className="button save-contact"
+        href={vcardUrl}
+        onClick={handleClick}
+      >
+        {children}
+      </a>
+      {showAndroidHelp ? (
+        <div className={styles.backdrop}>
+          <div
+            ref={dialogRef}
+            className={styles.dialog}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="android-contact-title"
+            aria-describedby="android-contact-steps"
+            tabIndex={-1}
+          >
+            <span className={styles.badge}>Android contact</span>
+            <h2 id="android-contact-title">Your contact file is downloading</h2>
+            <ol id="android-contact-steps" className={styles.steps}>
+              <li><span>1</span><p>Open <strong>Chrome Downloads</strong> from the download notification or the ⋮ menu.</p></li>
+              <li><span>2</span><p>Tap the downloaded <strong>.vcf contact file</strong>.</p></li>
+              <li><span>3</span><p>Choose <strong>Contacts</strong>, then tap <strong>Save</strong>.</p></li>
+            </ol>
+            <button className={styles.dismiss} type="button" onClick={() => setShowAndroidHelp(false)}>
+              Got it
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 }
