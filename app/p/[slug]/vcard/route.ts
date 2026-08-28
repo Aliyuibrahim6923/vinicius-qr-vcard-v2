@@ -48,7 +48,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     intentParts.push(`S.browser_fallback_url=${encodeURIComponent(fallbackUrl.toString())}`);
     intentParts.push("end");
     
-    return Response.redirect(intentParts.join(";"), 303);
+    const intentUrl = intentParts.join(";");
+    const escapedFallback = fallbackUrl.toString().replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+
+    // Return an HTML trampoline that triggers the intent client-side.
+    // Android Chrome blocks intent:// from server redirects but allows it from JS navigation.
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Saving contact…</title></head><body><p style="text-align:center;margin-top:40vh;font-family:sans-serif">Opening contacts…</p><script>window.location.href=${JSON.stringify(intentUrl)};setTimeout(function(){window.location.href=${JSON.stringify(fallbackUrl.toString())}},2000);</script><noscript><meta http-equiv="refresh" content="0;url=${escapedFallback}"></noscript></body></html>`;
+
+    return new Response(html, {
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }
+    });
   }
 
   const disposition = isIos ? `inline; filename="${filename}.vcf"` : `attachment; filename="${filename}.vcf"`;
